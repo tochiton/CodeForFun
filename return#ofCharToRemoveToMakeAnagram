@@ -1,0 +1,60 @@
+/*
+Print a single integer denoting the number of characters you must delete to make the two strings anagrams of each other.
+*/
+
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+public class Solution {
+    public static int numberNeeded(String first, String second) {
+        
+        Map<Character, Integer> firstMap = new HashMap<Character, Integer>();
+        Integer finalCount = 0;
+        Integer lengthFirst = first.length();
+        Integer lengthSecond = second.length();
+        
+        for(int i = 0; i < lengthFirst; i++){
+            // check if there is a char in the map
+            // if so -- get the value, add one and update the value
+            char currentChar = first.charAt(i);
+            if(firstMap.containsKey(currentChar)){
+                Integer addPlusOne = firstMap.get(currentChar) + 1;
+                firstMap.put(currentChar, addPlusOne);
+            }
+            else {
+                firstMap.put(currentChar, 1);
+            }
+        }
+        
+        for(int i = 0; i < lengthSecond; i++){
+            char currentChar = second.charAt(i);
+            if(firstMap.containsKey(currentChar)){
+                Integer currentCount = firstMap.get(currentChar);
+                if(currentCount == 1){
+                    firstMap.remove(currentChar);
+                }else{
+                    Integer addMinusOne = firstMap.get(currentChar) - 1;
+                firstMap.put(currentChar, addMinusOne);
+                }
+            }else{
+                finalCount ++;
+            }
+        }
+        
+        for(Map.Entry<Character, Integer> entry: firstMap.entrySet()){ 
+            finalCount = finalCount + entry.getValue();
+        };
+        
+        // return difference
+        return finalCount;
+    }
+  
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        String a = in.next();
+        String b = in.next();
+        System.out.println(numberNeeded(a, b));
+    }
+}
