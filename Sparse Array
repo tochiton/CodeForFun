@@ -1,0 +1,43 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+        Scanner scan = new Scanner(System.in);
+        int length = scan.nextInt();
+        String [] arrayOfString = new String [length + 1];
+        for(int i = 0; i <= length; i++){
+            String temp = scan.nextLine();
+            arrayOfString[i] = temp;
+            //System.out.println(arrayOfString[i]);
+        }
+        int secondLength = scan.nextInt();
+        String [] secondArrayOfString = new String [secondLength + 1];
+        for(int i = 0; i <= secondLength; i++){
+            String temp = scan.nextLine();
+            secondArrayOfString[i] = temp;
+            //System.out.println(secondArrayOfString[i]);
+        }
+        
+        for(int i = 0; i < secondLength; i++){
+            String wordToCompare = secondArrayOfString[i];
+            int count = 0;
+            for(int j = 0; j < length; j++){
+                if(wordToCompare.equals(arrayOfString[j])){
+                    count++;
+                }
+            }
+            if(count != 0){
+                System.out.println(count);
+            }
+        }
+        
+        //System.out.println(secondLength);
+       
+    }
+}
