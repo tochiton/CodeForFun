@@ -1,0 +1,36 @@
+class Solution {
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> myStack = new Stack<Integer>();
+        Integer firstValue = 0;
+        Integer secondValue = 0;
+        String operators = "+-*/";
+        //operators.contains(passArgument);
+        for(String myString: tokens){
+            
+            switch(myString){
+                case "+": 
+                    secondValue = myStack.pop();
+                    firstValue = myStack.pop();
+                    myStack.push(firstValue + secondValue);
+                    break;
+                case "-": 
+                    secondValue = myStack.pop();
+                    firstValue = myStack.pop();
+                    myStack.push(firstValue - secondValue);
+                    break;
+                case "*": 
+                    secondValue = myStack.pop();
+                    firstValue = myStack.pop();
+                    myStack.push(firstValue * secondValue);
+                    break;
+                case "/": 
+                    secondValue = myStack.pop();
+                    firstValue = myStack.pop();
+                    myStack.push(firstValue / secondValue);
+                    break;
+                default: myStack.push(Integer.valueOf(myString));
+            }
+        }
+        return myStack.pop();
+    }
+}
