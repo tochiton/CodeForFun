@@ -1,0 +1,169 @@
+import java.io.*;
+import java.util.*;
+
+class Solution {
+  
+  public static void main(String[] args) {
+    
+    int perPage = 5;
+    ArrayList<String> input = new ArrayList<String>();
+    //input.add("host_id,listing_id,score,city");
+    input.add("1,28,300.1,San Francisco");    
+    input.add("4,5,209.1,San Francisco");
+    input.add("20,7,208.1,San Francisco");
+    input.add("23,8,207.1,San Francisco");
+    input.add("16,10,206.1,Oakland");
+    
+    input.add("1,16,205.1,San Francisco");
+    input.add("1,31,204.6,San Francisco");
+    input.add("6,29,204.1,San Francisco");
+    input.add("7,20,203.1,San Francisco");
+    input.add("8,21,202.1,San Francisco");
+    
+    input.add("2,18,201.1,San Francisco");
+    input.add("2,30,200.1,San Francisco");
+    input.add("15,27,109.1,Oakland");
+    input.add("10,13,108.1,Oakland");
+    input.add("11,26,107.1,Oakland");
+    
+    input.add("12,9,106.1,Oakland");
+    input.add("13,1,105.1,Oakland");  input.add("6,29,204.1,San Francisco");
+22
+    input.add("7,20,203.1,San Francisco");
+23
+    input.add("8,21,202.1,San Francisco");
+24
+    input.add("2,18,201.1,San Francisco");
+25
+    input.add("2,30,200.1,San Francisco");
+26
+    input.add("15,27,109.1,Oakland");
+27
+    input.add("10,13,108.1,Oakland");
+28
+    input.add("11,26,107.1,Oakland");
+29
+    input.add("12,9,106.1,Oakland");
+30
+    input.add("13,1,105.1,Oakland");
+31
+    input.add("22,17,104.1,Oakland");
+32
+    input.add("1,2,103.1,Oakland");
+33
+    input.add("28,24,102.1,Oakland");
+34
+    input.add("18,14,11.1,San Jose");
+35
+    input.add("6,25,10.1,Oakland");    
+36
+    input.add("19,15,9.1,San Jose");
+37
+    input.add("3,19,8.1,San Jose");
+38
+    input.add("3,11,7.1,Oakland");
+39
+    input.add("27,12,6.1,Oakland");
+40
+    input.add("1,3,5.1,Oakland");
+41
+    input.add("25,4,4.1,San Jose");
+42
+    input.add("5,6,3.1,San Jose");
+43
+    input.add("29,22,2.1,San Jose");
+44
+    input.add("30,23,1.1,San Jose");
+45
+    
+46
+    
+47
+    orderList(input, perPage);
+48
+    
+49
+  }
+50
+    public static void orderList(ArrayList<String> input, int perPage){
+51
+        Arrays.toString(input.toArray());
+52
+        
+53
+        return;
+54
+    } 
+55
+}
+56
+​
+57
+
+    input.add("22,17,104.1,Oakland");
+    input.add("1,2,103.1,Oakland");
+    input.add("28,24,102.1,Oakland");
+    
+    input.add("18,14,11.1,San Jose");
+    input.add("6,25,10.1,Oakland");    
+    input.add("19,15,9.1,San Jose");
+    input.add("3,19,8.1,San Jose");
+    input.add("3,11,7.1,Oakland");
+    
+    input.add("27,12,6.1,Oakland");
+    input.add("1,3,5.1,Oakland");
+    input.add("25,4,4.1,San Jose");
+    input.add("5,6,3.1,San Jose");
+    input.add("29,22,2.1,San Jose");
+    input.add("30,23,1.1,San Jose");
+    
+    orderList(input, perPage);
+    
+    
+  }
+    public static void orderList(ArrayList<String> input, int perPage){
+        ArrayList<String> finalList = new ArrayList<String>();
+        ArrayList<String> queueList = new ArrayList<String>();
+
+    	Set<Integer> set = new HashSet<Integer>();
+    	
+    	int count = 0;
+    	int hostId = 0;
+        for(int i = 0; i < input.size(); i++){
+        	String wholeLine = input.get(i);
+        	String [] elements = wholeLine.split("\\s*,\\s*");   // parse the whole line
+        	String temp = elements[0];
+        	hostId = Integer.parseInt(String.valueOf(temp)); // convert string hostId to Int
+        	if(!set.contains(hostId)){
+        		finalList.add(wholeLine);
+        		set.add(hostId);
+        		count++;
+            	System.out.println(hostId);
+
+        	}else{
+        		queueList.add(wholeLine);
+        	}
+        	if(count == perPage){
+        		set.clear();
+        		count = 0;
+            	System.out.println("****** Elements per page ***********");
+
+        		for(int j = 0; j < queueList.size(); j++){
+        			wholeLine = queueList.get(j);
+        			elements = wholeLine.split("\\s*,\\s*");   // parse the whole line
+                	temp = elements[0];
+                	hostId = Integer.parseInt(String.valueOf(temp));
+                	if(!set.contains(hostId)){
+                		finalList.add(wholeLine);
+                    	System.out.println(hostId);
+                		queueList.remove(wholeLine);
+                		set.add(hostId);
+                		count++;
+                	}
+        		}
+        	}
+        }
+        
+        return;
+    } 
+}
