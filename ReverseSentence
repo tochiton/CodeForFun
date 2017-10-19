@@ -1,0 +1,35 @@
+import java.io.*;
+import java.util.*;
+public class Main {
+
+    public static void main(String[] args) {
+        String arg = "The House Green";
+        System.out.println(reverseSentence(arg));
+    }
+    public static String reverseSentence(String sentence){
+        int length = sentence.length();
+        char [] ch = sentence.toCharArray();
+        String finalSentence ="";
+        String temp = "";
+        for(int i = length -1; i > -1; i--){
+            if(Character.isWhitespace(ch[i]) || i <= 0){
+                if(i == 0){
+                    temp = Character.toString(ch[i]) + temp;
+                    return finalSentence = finalSentence + " " + temp;
+
+                }
+                if(finalSentence == ""){
+                    finalSentence = temp;
+                    temp = "";
+                }else {
+                    finalSentence = finalSentence + " " + temp;
+                    temp = "";
+                }
+            }else {
+                temp = Character.toString(ch[i]) + temp;
+            }
+        }
+
+        return finalSentence;
+    }
+}
