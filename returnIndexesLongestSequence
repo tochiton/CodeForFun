@@ -1,0 +1,51 @@
+package com.company;
+
+import org.junit.Test;
+import org.junit.Assert;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+    }
+
+    public static int [] getLongestSequence(String str, char value){
+        int [] indexes = {0,0};
+
+        boolean flag = false;
+        int globalCount = 0;
+        int localCount = 0;
+        int length = str.length();
+
+        for(int i = 0; i < length; i++){
+            if(str.charAt(i) == value){
+                localCount++;
+                if(i == length -1){
+                    if(localCount > globalCount){
+                        globalCount = localCount;
+                        indexes[0] = length - globalCount;
+                        indexes[1] = length -1;
+                        return indexes;
+                    }
+                }
+            }else{
+                if(localCount > globalCount){
+                    globalCount = localCount;
+                    indexes[0] = i - globalCount;
+                    indexes[1] = i -1;
+                    localCount = 0;
+                }else{
+                    localCount = 0;
+                }
+            }
+        }
+        return indexes;
+    }
+    @Test
+    public void runTest(){
+        String str = "11110111";
+        int [] result = {0,3};
+        Assert.assertArrayEquals(result, getLongestSequence(str, '1'));
+    }
+
+}
