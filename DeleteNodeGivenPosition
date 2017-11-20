@@ -1,0 +1,29 @@
+Node Delete(Node head, int position) {
+  // Complete this method
+    Node tempHead = head;
+    if(tempHead.next == null && position == 0){
+        head = null;
+        return head;
+    }
+    if(head == null)
+        return null;
+    Node previous = head;
+    Node current = head;
+    int count = 0;
+    while(current != null){
+        if(count == position && position == 0){
+            tempHead = head.next;
+            head = null;
+            return tempHead;
+        }else if(count == position){
+            previous.next = current.next;
+            current = null; 
+            return head;
+        }
+        count++;
+        previous = current;
+        current = current.next;
+    }
+    return head;
+        
+}
