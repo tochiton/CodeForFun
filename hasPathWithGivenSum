@@ -1,0 +1,57 @@
+//
+// Definition for binary tree:
+// class Tree<T> {
+//   Tree(T x) {
+//     value = x;
+//   }
+//   T value;
+//   Tree<T> left;
+//   Tree<T> right;
+// }
+boolean hasPathWithGivenSum(Tree<Integer> t, int s) {
+    if(t == null && s !=0)
+        return false;
+    if(t == null && s == 0)
+        return true;
+    
+    int sum = 0;
+    int rootValue = (int) t.value;
+    Stack<Tree> myStack = new Stack<Tree>();
+    Tree current = t;
+    
+    while(current != null){
+        myStack.push(current);
+        //System.out.println(sum);
+        if(current.left == null && current.right == null){
+            if(sum + (int) current.value == s)
+                return true;
+        }else{
+            sum = sum + (int) current.value;
+        } 
+        current = current.left;
+    }
+    while(myStack.size() > 0){
+        current = myStack.pop();
+        if(rootValue == (int) current.value){
+            sum = (int) current.value;
+        }
+        if(current.right != null){
+            current = current.right;
+            while(current != null){
+                myStack.push(current);
+                if(current.left == null && current.right == null){
+                    if(sum + (int) current.value == s)
+                        return true;
+                    }else{
+                        sum = sum + (int) current.value;
+                        System.out.println(current.value);
+                    }
+                current = current.left;
+            }
+        }
+    }
+    
+    return false;
+}
+
+
