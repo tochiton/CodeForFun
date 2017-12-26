@@ -1,0 +1,25 @@
+char firstNotRepeatingCharacter(String s) {
+    HashMap<Character, Integer> myMap = new LinkedHashMap<Character, Integer>();
+    int count = 0;
+    for(char currentChar: s.toCharArray()){
+        if(!myMap.containsKey(currentChar)){
+          myMap.put(currentChar, 1);  
+        }else{
+          count = myMap.get(currentChar);
+          count++;
+          myMap.put(currentChar, count);  
+        }
+    }
+    if(!myMap.containsValue(1))
+        return '_';
+    
+    for(Map.Entry m: myMap.entrySet()){
+        count = (int) m.getValue();
+        if(count == 1){
+            Character charTemp = (char) m.getKey();
+            return charTemp;
+        }
+    }
+    
+    return '_';
+}
