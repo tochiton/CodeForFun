@@ -1,0 +1,57 @@
+String[][] groupingDishes(String[][] dishes) {
+    
+    int lengthDepth = dishes.length;
+
+    //LinkedList<String> myList = new LinkedList<String>(); 
+    TreeMap<String, ArrayList<String>> myMap = new TreeMap<String, ArrayList<String>>();
+    
+    for(int i = 0; i < lengthDepth; i++){
+        int length = dishes[i].length;
+        String dishName = dishes[i][0];
+        //System.out.println("The dishname: " + dishName);
+        for(int j = 1 ; j < length; j++){
+            //System.out.print(dishes[i][j] + " ");
+            if(myMap.get(dishes[i][j]) == null){
+                myMap.put(dishes[i][j], new ArrayList<>());
+                myMap.get(dishes[i][j]).add(dishName); 
+            }else{
+                myMap.get(dishes[i][j]).add(dishName);
+            }                  
+        }
+    }
+        
+    Iterator<String> iterator = myMap.keySet().iterator();
+    while(iterator.hasNext()){
+        String keyName = iterator.next();
+        if(myMap.get(keyName).size() < 2){
+            iterator.remove();
+        }
+    }
+        
+    for(String key: myMap.keySet()){
+        ArrayList temp = myMap.get(key);
+            Collections.sort(temp);
+            //System.out.print(key + ": ");
+            //System.out.println(temp.toString());
+    }
+    int lengthOfTree = myMap.size();
+    String[][] result = new String [lengthOfTree][];
+    
+    int outerIndex = 0;
+        for(String key: myMap.keySet()){
+            ArrayList listDishes = myMap.get(key);
+            int lengthDishes = listDishes.size();
+            result[outerIndex] = new String [lengthDishes + 1];
+            result[outerIndex][0] = key;
+            int index = 1;
+            Iterator<String> iterator2 = listDishes.iterator();
+            while(iterator2.hasNext()){
+                result[outerIndex][index] = iterator2.next();
+                index++;
+            }
+            outerIndex++;
+        }
+    
+    System.out.println(Arrays.deepToString(result));
+    return result;
+}
