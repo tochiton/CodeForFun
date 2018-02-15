@@ -1,0 +1,92 @@
+package com.company;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+class Graph{
+    private int V;
+    private LinkedList<Integer> adj [];
+
+    Graph(int v){
+        V = v;
+        adj = new LinkedList[v];
+        for(int i = 0; i < v; i++){
+            adj[i] = new LinkedList<Integer>();
+        }
+    }
+
+    void addEdge(int v, int w){
+        adj[v].add(w);
+    }
+
+    void BFS(int s){
+        Boolean [] visited = new Boolean[V];
+        Arrays.fill(visited, false);
+        visited[s] = true;
+        LinkedList<Integer> queue = new LinkedList<Integer>();
+        queue.add(s);
+
+        while(queue.size() != 0){
+            int vertex = queue.poll();
+            System.out.println(vertex + " ");
+
+            Iterator<Integer> i = adj[vertex].listIterator();
+            while(i.hasNext()){
+                int nextVertex = i.next();
+                if(!visited[nextVertex]){
+                    visited[nextVertex] = true;
+                    queue.add(nextVertex);
+                }
+            }
+        }
+    }
+
+    void depthFirst(int v, Boolean [] visited){
+        visited[v] = true;
+        System.out.println(v + " ");
+        Iterator<Integer> i = adj[v].listIterator();
+        while (i.hasNext()){
+            int vertex =  i.next();
+            if(!visited[vertex])
+                depthFirst(vertex, visited);
+        }
+
+    }
+
+    void DepthFirstWrapper(int v){
+        Boolean [] visited = new Boolean[V];
+        Arrays.fill(visited, false);
+        // in case you want to handle disconnected graphs
+        for(int i = 0; i < V; i++)                  // if connected remove this
+            if(visited[i] == false)                 // this
+        depthFirst(v, visited);
+    }
+}
+public class Main {
+
+    public static void main(String[] args) {
+        Graph graph = new Graph(5);
+        graph.addEdge(2,0);
+       // graph.addEdge(2,1);
+        graph.addEdge(2, 3);
+        graph.addEdge(0, 1);
+        graph.addEdge(0, 2);
+        graph.addEdge(1, 2);
+        graph.addEdge(1,4);
+        graph.addEdge(3,3);
+
+        graph.BFS(2);
+        System.out.println();
+        graph.DepthFirstWrapper(2);
+
+    }
+}
+
+
+
+
+
+
+
+
