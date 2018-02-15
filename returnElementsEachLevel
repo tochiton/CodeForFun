@@ -1,0 +1,44 @@
+//
+// Definition for binary tree:
+// class Tree<T> {
+//   Tree(T x) {
+//     value = x;
+//   }
+//   T value;
+//   Tree<T> left;
+//   Tree<T> right;
+// }
+int[] traverseTree(Tree<Integer> t) {
+    int [] result = new int[0];
+
+    if(t == null)
+        return result;
+    
+    Queue<Tree<Integer>> queue = new LinkedList<Tree<Integer>>();
+    LinkedList<Integer> list = new LinkedList<Integer>();
+    queue.add(t);
+    
+    while(queue.size() != 0){
+        Tree<Integer> node = queue.poll();
+        //System.out.print(node.value);
+        list.add((Integer) node.value);
+        if(node.left != null)
+            queue.add(node.left);
+        if(node.right != null)
+            queue.add(node.right);
+    }
+    
+    int length = list.size();
+    int [] ret = new int [length];
+    int index = 0;
+    for(Integer temp: list){
+        ret[index] = temp;
+        index++;
+    }
+    
+    return ret;
+}
+
+
+
+
