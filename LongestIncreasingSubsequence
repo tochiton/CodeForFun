@@ -1,0 +1,19 @@
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int length = nums.length;
+        int longest = 0;
+        for(int i = 0; i < length; i++){
+            int localCount = 1;
+            int currentValue = nums[i];
+            for(int j = i + 1; j < length; j++){
+                if(currentValue < nums[j]){
+                    localCount++;
+                    currentValue = nums[j];
+                }
+            }
+            if(localCount > longest)
+                longest = localCount;
+        }
+        return longest;
+    }
+}
