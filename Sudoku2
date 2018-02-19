@@ -1,0 +1,47 @@
+boolean sudoku2(char[][] grid) {
+    int lengthX = grid.length;
+    int lengthY = grid[0].length;
+    
+    for(int y = 0; y < 9; y = y + 3){
+        for(int x = 0; x < 9; x = x + 3){
+          boolean result = checkGrid(x, y, grid);  
+          if(!result)
+              return false;
+        }
+    }    
+    
+    return true;
+}
+
+boolean checkGrid(int x, int y, char[][] grid){
+    Set<Integer> set = new HashSet<Integer>();
+    for(int i = y; i < y+3; i++){
+        for(int j = x; j < x + 3; j++){
+            if(grid[i][j] != '.'){
+                int val = Character.getNumericValue(grid[i][j]);
+                if(set.contains(val)){
+                    return false;
+                }else{
+                    set.add(val);
+                    int result = checkEndToEnd(grid, i, j, val);
+                    if(result != 2)
+                        return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+int checkEndToEnd(char[][] grid, int y, int x, int val){
+    int count = 0;
+    for(int i = 0; i < 9; i++){
+        if(Character.getNumericValue(grid[y][i]) == val){
+            count++;
+        }
+        if(Character.getNumericValue(grid[i][x]) == val){
+            count++;
+        }
+    }
+    return count;
+}
