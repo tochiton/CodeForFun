@@ -1,0 +1,121 @@
+import java.util.*;
+
+ * 
+
+ * Symbol.start("_Greeting").makeTree(g);
+ *
+ *        _Greeting
+ *         /  |   \
+ *        /   |    \
+ *      _HI  name  _Bye
+ *       |           | \
+ *       |           |  \
+ *      hello       see ya
+ *
+ * After calling printTree() we'll have
+ *
+ * hello name see ya
+ *
+ */
+
+public abstract class Symbol
+{
+
+    public abstract void makeTree(Grammar g);
+    public abstract void printTree();
+
+    public static Symbol start(String s) throws Exception
+    {
+        return new nonterminal(s);
+        //throw new Exception("Error: start not implemented");
+    }
+}
+
+class terminal extends Symbol{
+    private String val;
+
+    terminal(String s){
+        this.val = s;
+    }
+
+    @Override
+    public void makeTree(Grammar g) {
+        //System.out.println("From maketree terminal");
+    }
+
+    @Override
+    public void printTree(){
+        System.out.print(this.val + " ");
+    }
+}
+
+class nonterminal extends Symbol{
+    private String val;
+    List<Symbol> myList = new ArrayList<Symbol>();
+
+    nonterminal(String s){
+        this.val = s;
+    }
+    @Override
+    public void makeTree(Grammar g) {
+        //System.out.println("From maketree non_terminal");
+        List<String> ss = g.getRandom(this.val);
+        for(String s : ss){
+            //System.out.println(s);
+            if(g.isNonTerminal(s)){
+                Symbol node = new nonterminal(s);
+                myList.add(node);
+                node.makeTree(g);
+                //System.out.println("make tree non_terminal: " + s);
+            }else{
+                //System.out.println("terminal: " + s);
+                myList.add(new terminal(s));
+            }
+        }
+    }
+
+    @Override
+    public void printTree(){
+        //System.out.println("From non_terminal");
+        for(int i = 0; i < myList.size(); i++){
+            Symbol temp = myList.get(i);
+            temp.printTree();
+        }
+    }
+}
+
+//class MySymbol extends Symbol{
+//    private String val;
+//    private Grammar myGrammar;
+//    private String result = "";
+//    private String finalResult = "";
+//    MySymbol(String s){
+//        this.val = s;
+//    }
+//    @Override
+//    public void makeTree(Grammar g){
+//        myGrammar = g;
+//        List<String> ss = g.getRandom(this.val);
+//        finalResult = build(ss);
+//    }
+//    private String build(List<String> myList){
+//        if(myList.isEmpty())
+//            return result;
+//
+//        for(String val : myList){
+//            if(val.charAt(0) == '_') {
+//                result = build(myGrammar.getRandom(val));
+//            }else{
+//                result = result + " " + val;
+//            }
+//        }
+//        return result;
+//    }
+//
+//    @Override
+//    public void printTree(){
+//        System.out.println(finalResult);
+//    }
+//}
+
+
