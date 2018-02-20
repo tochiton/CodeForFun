@@ -40,6 +40,7 @@ class terminal extends Symbol{
 
     @Override
     public void makeTree(Grammar g) {
+        //System.out.println("From maketree terminal");
     }
 
     @Override
@@ -50,31 +51,35 @@ class terminal extends Symbol{
 
 class nonterminal extends Symbol{
     private String val;
-    List<Symbol> list = new LinkedList<Symbol>();
+    List<Symbol> myList = new ArrayList<Symbol>();
 
     nonterminal(String s){
         this.val = s;
     }
     @Override
     public void makeTree(Grammar g) {
+        //System.out.println("From maketree non_terminal");
         List<String> ss = g.getRandom(this.val);
         for(String s : ss){
-            if(s.chartAt(0) == "_"){
-                list.add(new nonterminal(s));
-            }else{      
-                list.add(new terminal(s));
+            //System.out.println(s);
+            if(g.isNonTerminal(s)){
+                Symbol node = new nonterminal(s);
+                myList.add(node);
+                node.makeTree(g);
+                //System.out.println("make tree non_terminal: " + s);
+            }else{
+                //System.out.println("terminal: " + s);
+                myList.add(new terminal(s));
             }
         }
     }
 
     @Override
     public void printTree(){
+        //System.out.println("From non_terminal");
         for(int i = 0; i < myList.size(); i++){
-            Symbol newNode = myList.get(i);
-            newNode.printTree();
+            Symbol temp = myList.get(i);
+            temp.printTree();
         }
     }
 }
-
-
-
