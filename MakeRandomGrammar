@@ -57,7 +57,6 @@ class nonterminal extends Symbol{
     }
     @Override
     public void makeTree(Grammar g) {
-        //System.out.println("From maketree non_terminal");
         List<String> ss = g.getRandom(this.val);
         for(String s : ss){
             if(s.chartAt(0) == "_"){
