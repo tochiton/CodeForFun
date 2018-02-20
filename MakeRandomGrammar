@@ -61,7 +61,6 @@ class nonterminal extends Symbol{
         for(String s : ss){
             if(s.chartAt(0) == "_"){
                 list.add(new nonterminal(s));
-                node.makeTree(g);
             }else{      
                 list.add(new terminal(s));
             }
