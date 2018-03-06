@@ -1,0 +1,113 @@
+// Definition for singly-linked list:
+// class ListNode<T> {
+//   ListNode(T x) {
+//     value = x;
+//   }
+//   T value;
+//   ListNode<T> next;
+// }
+
+String convertListToNum(ListNode<Integer> list){
+    String result = "";
+    String temp;
+    if(list == null)
+        return result;
+    ListNode current = list;
+    while(current != null){
+        //System.out.println(current.value);
+        temp = String.valueOf(current.value);
+        int length = 4 - temp.length();
+        for(int i = 0; i < length; i++){
+            temp = "0" + temp;
+        }
+        result = result + temp;
+        //System.out.println(temp);
+        current = current.next;
+    }
+    return result;
+}
+
+Stack<Integer> addStack(ListNode<Integer> list){
+    ListNode current = list;
+    Stack<Integer> stack = new Stack<Integer>();
+    if(list == null)
+        return stack;
+    while(current != null){
+        stack.push((Integer)current.value);
+        current = current.next;
+    }
+    return stack;
+}
+
+ListNode<Integer> addTwoHugeNumbers(ListNode<Integer> a, ListNode<Integer> b) {
+
+    ListNode firstList = a;
+    ListNode secondList = b;
+    int valueL1, valueL2, result, carryOver = 0;
+    
+    Stack stackOfL1 = addStack(a);
+    Stack stackOfL2 = addStack(b);
+    Stack<Integer> stackResult = new Stack<Integer>();
+    //System.out.println(Arrays.toString(stackOfL1.toArray()));
+    while(!stackOfL1.isEmpty() || !stackOfL2.isEmpty()){
+        if(!stackOfL1.isEmpty()){
+            valueL1 = (Integer) stackOfL1.pop();
+        }else{
+            valueL1 = 0;
+        }
+        if(!stackOfL2.isEmpty()){
+            valueL2 = (Integer) stackOfL2.pop(); 
+        }else{
+            valueL2 = 0;    
+        }
+        
+        result = valueL1 + valueL2 + carryOver;
+        if(result >= 10000){
+            carryOver = 1;
+            result = result - 10000;
+            stackResult.push(result);
+        }else{
+            carryOver = 0;
+            stackResult.push(result);
+        }        
+    }
+    if(carryOver == 1)
+        stackResult.push(1);
+    
+    System.out.println(Arrays.toString(stackResult.toArray()));
+    ListNode head = new ListNode(0);
+    head.next = null;
+    ListNode lastNode = head;
+    int tempValue = 0;
+    if(!stackResult.isEmpty()){
+        tempValue = (Integer)stackResult.pop();
+        ListNode aNode1 = new ListNode(tempValue);
+        aNode1.next = null;
+        head = aNode1;
+    }
+    
+    lastNode = head;
+    while(!stackResult.isEmpty()){
+        tempValue = (Integer)stackResult.pop();
+        //System.out.print(tempValue);
+        ListNode aNode = new ListNode(tempValue);
+        lastNode.next = aNode;
+        aNode.next = null;
+        lastNode = aNode;
+    }
+    
+    
+    //ListNode current = head;
+    // while(current != null){
+    //     System.out.println(current.value);
+    //     current = current.next;
+    // }
+    
+    return head;
+}
+
+
+
+
+
+
