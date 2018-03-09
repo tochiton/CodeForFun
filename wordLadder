@@ -1,0 +1,42 @@
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        
+        int count = 1;
+        boolean flag;
+        while(diffByOne(beginWord, endWord) != 1){
+            beginWord = getWord(beginWord, wordList);
+            if(beginWord == null)
+                return 0;
+            count++;
+            if(diffByOne(beginWord, endWord) == 1)
+                if(wordList.contains(endWord))
+                    return count + 1;
+                else return 0;
+        }
+        
+
+        return count + 1;
+    }
+    public String getWord(String current, List<String> list){
+        ListIterator<String> iterator = list.listIterator();
+        while(iterator.hasNext()){
+            String temp = iterator.next();
+            if(diffByOne(current, temp) == 1){
+                iterator.remove();
+                return temp;
+            }
+        }
+        return null;
+    }
+    public int diffByOne(String str1, String str2){
+        int length = str1.length();
+        int count = 0;
+        for(int i = 0; i < length; i++){
+            if(str1.charAt(i) != str2.charAt(i)){
+                count ++; 
+            }
+            
+        }
+        return count;
+    }
+}
