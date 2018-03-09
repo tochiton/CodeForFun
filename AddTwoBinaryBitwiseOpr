@@ -1,0 +1,32 @@
+    public static String addTwoBinary(String str1, String str2){
+        if(str1 == null && str2 == null)
+            return null;
+        int length1 = str1.length() - 1;
+        int length2 = str2.length() - 1;
+
+        StringBuffer sb = new StringBuffer();
+        int carry = 0;
+
+        while(length1 >= 0 || length2 >= 0){
+            int sum = carry;
+
+            if(length1 >= 0){
+                sum += str1.charAt(length1) - '0';
+                length1--;
+            }
+            if(length2 >= 0){
+                sum += str2.charAt(length2);
+                length2--;
+            }
+
+            carry = sum >> 1;
+            sum = sum & 1;
+            sb.append(sum == 0 ? '0' : '1');
+        }
+        if(carry != 0)
+            sb.append('1');
+        sb.reverse();
+
+        return String.valueOf(sb);
+
+    }
