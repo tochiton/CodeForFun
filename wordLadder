@@ -1,33 +1,35 @@
 class Solution {
-    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        
-        int count = 1;
-        boolean flag;
-        while(diffByOne(beginWord, endWord) != 1){
-            beginWord = getWord(beginWord, wordList);
-            if(beginWord == null)
-                return 0;
-            count++;
-            if(diffByOne(beginWord, endWord) == 1)
-                if(wordList.contains(endWord))
-                    return count + 1;
-                else return 0;
+    
+    class Node{
+        String word;
+        int steps;
+        public Node(String value, int stepCount){
+            word = value;
+            steps = stepCount;
         }
-        
-
-        return count + 1;
     }
-    public String getWord(String current, List<String> list){
-        ListIterator<String> iterator = list.listIterator();
-        while(iterator.hasNext()){
-            String temp = iterator.next();
-            if(diffByOne(current, temp) == 1){
-                iterator.remove();
-                return temp;
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+       LinkedList<Node> queue = new LinkedList<Node>();
+        queue.add(new Node(beginWord, 1));
+        Node current;
+        while(!queue.isEmpty()){
+            current = queue.poll();
+            ListIterator<String> iterator = wordList.listIterator();
+            while(iterator.hasNext()){
+                String temp = iterator.next();
+                if(diffByOne(current.word, temp) == 1){
+                    if(temp.equals(endWord)){
+                        return current.steps + 1;
+                    }
+                    queue.add(new Node(temp, current.steps + 1));
+                    iterator.remove();
+                }
             }
         }
-        return null;
+        
+        return 0;
     }
+
     public int diffByOne(String str1, String str2){
         int length = str1.length();
         int count = 0;
