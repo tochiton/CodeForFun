@@ -1,0 +1,40 @@
+Integer convert(String word, HashMap<Character, Integer> map){
+    Integer result = 0;
+    int length = word.length() - 1;
+    for(int i = 0; i <= length; i++){
+        //System.out.println("before : " + result + "exponent: " + Math.pow(10,i));
+        result = result + (int) map.get(word.charAt(length - i)) * (int)Math.pow(10,i) ;
+        //System.out.println("after : " + result);
+
+    }
+    System.out.println(word +" "+ result);
+    return result;
+}
+
+boolean isCryptSolution(String[] crypt, char[][] solution) {
+    int length = solution.length;
+    HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+    for(int i =0; i < length; i++){
+        //System.out.println(solution[i][0] + ": " +solution[i][1]);
+        map.put(solution[i][0], Character.getNumericValue(solution[i][1]));
+    }
+    //System.out.println(Arrays.asList(map));
+    for(int j = 0; j < 3; j++){
+        if(crypt[j].length() >= 15)
+            return false;
+    }
+    int valueStr1 = convert(crypt[0], map);
+    int valueStr2 = convert(crypt[1], map);
+    int result = convert(crypt[2], map);
+    if(map.get(crypt[0].charAt(0)) == 0 && crypt[0].length() > 1 && map.get(crypt[1].charAt(0)) == 0 && crypt[1].length() > 1)
+        return false;
+    if((valueStr1 + valueStr2) == result){
+        if(map.get(crypt[2].charAt(0)) == 0 && crypt[2].length() > 1)
+            return false;
+        return true;
+    }
+    else 
+        return false;
+}
+
+
