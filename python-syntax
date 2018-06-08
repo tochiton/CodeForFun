@@ -1,0 +1,48 @@
+myDict = {'name': 'Zara', 'age': 27, 'class': 'CS'}
+print (myDict)
+print (myDict['name'])
+tempName = myDict['name']
+#print (tempName)
+tempName = tempName + "Pretty"
+myDict['name'] = tempName
+#print(myDict['name'])
+
+del myDict['class']
+print(myDict)
+
+list1 = [1,2,3,4]
+list1.append(8)     # append to the list 
+list1.remove(2)     # remove element from the list 
+index = list1.index(4)
+print(list1)
+print("Index of item 4 in list: ", index)
+
+author = {
+  'Alina' : ["title1", "title2", "title3"],
+  "Tuan" : ["title2", "title3"]
+}
+print(author)
+
+tempList = author["Alina"]
+tempList.append("title4")
+author["Alina"] = tempList
+print(author["Alina"])
+
+value = "Alina"
+if "Alina" in author:
+  print("Yes")
+else: 
+  print("No")
+
+
+d = dict()
+
+for i in xrange(100):
+    key = i % 10
+    if key in d:
+        d[key] += 1
+    else:
+        d[key] = 1
+
+
+
