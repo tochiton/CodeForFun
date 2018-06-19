@@ -1,0 +1,16 @@
+def containsCloseNums(nums, k):
+    my_map = {}
+    i = 0
+    
+    while i < len(nums):
+        value = nums[i]
+        if value not in my_map:
+            my_map[value] =i
+        else:
+            result = abs(my_map[value] - i)
+            if result <= k:
+                return True
+            else: 
+                my_map[value] = i
+        i += 1
+    return False
