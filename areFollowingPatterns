@@ -1,0 +1,17 @@
+def areFollowingPatterns(strings, patterns):
+    if len(strings) != len(patterns):
+        return False;
+    i = 0
+    my_map = {}
+    while i < len(strings):
+        temp_string = strings[i]
+        temp_pattern = patterns[i]
+        if temp_pattern not in my_map:
+            if temp_string in my_map.values():
+                return False
+            my_map[temp_pattern] = temp_string
+        else: 
+            if my_map[temp_pattern] != temp_string and temp_string not in my_map.values():
+                return False 
+        i += 1
+    return True
