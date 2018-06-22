@@ -1,0 +1,22 @@
+#
+# Definition for binary tree:
+# class Tree(object):
+#   def __init__(self, x):
+#     self.value = x
+#     self.left = None
+#     self.right = None
+def isTreeSymmetric(t):
+    if t is None:
+        return True
+    return mirror(t.left, t.right)
+    
+    
+def mirror(left_tree, right_tree):
+    if left_tree is None and right_tree is None:
+        return True
+    if left_tree is not None and right_tree is not None:
+        if left_tree.value != right_tree.value:
+            return False 
+        return (mirror(left_tree.left, right_tree.right)) and (mirror(left_tree.right, right_tree.left))
+    else:
+        return False 
