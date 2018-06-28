@@ -1,0 +1,18 @@
+def isCryptSolution(crypt, solution):
+    my_map = {}
+    for x in solution:
+        print(x)
+        my_map[x[0]] = x[1]
+    # print(my_map)
+    my_list = []
+    for input in crypt:
+        temp_str = ""
+        for c in input:
+            temp_str += my_map[c]
+        if temp_str[0] == '0' and len(temp_str) > 1:
+            return False 
+        my_list.append(temp_str)
+    if int(my_list[0]) + int(my_list[1]) == int(my_list[2]):    
+        return True
+    else:
+        return False
