@@ -1,0 +1,33 @@
+#
+# Definition for binary tree:
+# class Tree(object):
+#   def __init__(self, x):
+#     self.value = x
+#     self.left = None
+#     self.right = None
+my_map = {}
+def largestValuesInTreeRows(t):
+    if t is None:
+        return []
+    max_current_height(t, 0)
+    result = []
+    for x in my_map.values():
+        result.append(x)
+    print (result) 
+    return result
+    
+def max_current_height(node, height):
+    if node is None:
+        return
+    value = node.value
+    if height not in my_map:
+        my_map[height] = value
+    else:
+        temp_value = my_map[height]
+        if value > temp_value:
+            my_map[height] = value
+    if node.left is not None:
+        max_current_height(node.left, height + 1)
+    if node.right is not None:
+        max_current_height(node.right, height + 1)    
+    
