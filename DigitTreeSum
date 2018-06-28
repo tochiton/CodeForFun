@@ -1,0 +1,30 @@
+#
+# Definition for binary tree:
+# class Tree(object):
+#   def __init__(self, x):
+#     self.value = x
+#     self.left = None
+#     self.right = None
+list_of_value = []
+def digitTreeSum(t):
+    if t is None:
+        return 0
+    add_value_tree(t, "")
+    result = 0
+    for x in list_of_value:
+        result = result + x
+    return result
+
+def add_value_tree(node, concat_value):
+    if node is None:
+        return
+    if node.left is None and node.right is None:
+        list_of_value.append(int(concat_value + str(node.value)))
+    concat_value = concat_value + str(node.value)
+    if node.left is not None:
+        add_value_tree(node.left, concat_value)
+    if node.right is not None:
+        add_value_tree(node.right, concat_value)    
+    
+    
+    
