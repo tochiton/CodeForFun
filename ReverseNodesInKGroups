@@ -1,0 +1,29 @@
+def get_length(l, k):
+    if l is None:
+        return 0
+    count = 0
+    current = l
+    while(current):
+        count +=1
+        if count == k:
+            return 1
+        current = current.next
+    return 0    
+
+def reverseNodesInKGroups(l, k):
+    prev = None
+    next = None 
+    current = l
+    count = k
+    if(get_length(l, k) == 1):
+        while(current and count != 0):
+            next = current.next
+            current.next = prev
+            prev = current
+            current = next
+            count -=1
+        if next is not None:
+            l.next = reverseNodesInKGroups(next, k)
+        return prev
+    else:
+        return l 
