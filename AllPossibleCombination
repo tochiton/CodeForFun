@@ -1,0 +1,40 @@
+import java.util.*;
+public class HelloWorld{
+    
+    private final static List<List<Integer>> combList = new ArrayList<>();
+    public static void findAllCombinations(int [] arr, int r){
+        Queue<List<Integer>> paths = new LinkedList<>();
+        for(int i: arr){
+            List<Integer> list = new LinkedList<>();
+            list.add(i);
+            paths.add(list);
+            list = null;
+        }
+        while(!paths.isEmpty()){
+            List<Integer> path = paths.remove();
+            //if(path.size() == r)
+            combList.add(path);
+            for(int i : arr){
+                if(!path.contains(i)){
+                    List<Integer> new_path = new LinkedList<Integer>(path);
+                    new_path.add(i);
+                    paths.add(new_path);
+                    new_path = null; 
+                }
+            }
+        }
+    }
+     public static void main(String []args){
+        int [] arr = {1,2,3,4};
+        int r = 3; 
+        findAllCombinations(arr, 3);
+        		// print all combinations
+		System.out.println("All possible combinations are :-");
+		for (List<Integer> arrEle : combList) {
+			System.out.println(arrEle);
+		}
+        
+        
+        
+     }
+}
