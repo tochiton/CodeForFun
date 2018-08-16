@@ -1,0 +1,23 @@
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        length = len(prices)
+        if length < 2:
+            return 0
+
+        i = 0
+        min_pric = prices[0]
+        profit_daily = []
+        while i < length:
+            if prices[i] > min_pric:
+                profit = prices[i] - min_pric
+                profit_daily.append(profit)
+            elif prices[i] < min_pric:
+                min_pric = prices[i]
+            i += 1
+        if not profit_daily:
+            return 0
+        return max(profit_daily)  
