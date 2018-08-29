@@ -1,0 +1,18 @@
+def smartAssigning(names, statuses, projects, tasks):
+    min_task = tasks[0]
+    previous_project = projects[0]
+    result_index = 0
+    i = 0
+    while i < len(tasks):
+        if not statuses[i]:
+            if tasks[i] == min_task:
+                if projects[i] < previous_project:
+                    result_index = i
+                    min_task = tasks[i]
+                    previous_project = projects[i]
+            elif tasks[i] < min_task:
+                result_index = i
+                min_task = tasks[i]
+                previous_project = projects[i]
+        i = i + 1
+    return names[result_index]
