@@ -1,0 +1,24 @@
+    def threeSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        
+        if nums is None:
+            return [[]]
+        length = len(nums)
+        i = 0
+        result = []
+        while(i < length - 2):
+            # print(nums[i], nums[i+1])
+            j = i + 1
+            temp = []
+            while(j < length - 1):
+                if nums[i] + nums[j] + nums[j+ 1] == 0:
+                    print(nums[i], nums[j], nums[j+ 1])
+                    temp = [nums[i]] + [nums[j]] + [nums[j+ 1]]
+                    if temp not in result:
+                        result.append(temp)
+                j += 1
+            i += 1
+        return result 
