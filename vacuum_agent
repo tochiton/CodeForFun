@@ -1,0 +1,142 @@
+from random import randint
+
+def instantiate_twod_array(dimension):
+    twoDarray = [[0] * dimension for i in range(dimension)]
+    return twoDarray
+
+
+def print_twod_array(twoDarray):
+    for row in twoDarray:
+        for elem in row:
+            print elem,
+        print("\n")
+
+
+def generate_random(n):
+    return randint(0, n -1)
+
+# returns a two d array with initial dirty tiles depending
+# on the arguments
+def instantiate_dirt_tiles(num_of_dirt_tiles, twod_array):
+    one_dimension = len(twod_array) - 1
+    for i in range(num_of_dirt_tiles):
+         x = generate_random(2)
+         y = generate_random(2)
+         twod_array[x][y] = 1
+    return twod_array
+
+def can_i_move(dimension, row, column):
+    return row < dimension and column < dimension
+
+def random_move(row_position, column_position, dimension, num_steps):
+    rand_val = generate_random(4)
+
+    if rand_val == 0:
+        if column_position + 1 < dimension:
+            column_position += 1
+            num_steps += 1
+            return row_position, column_position, num_steps
+        else:
+            return random_move(row_position, column_position, dimension, num_steps + 1)
+    elif rand_val == 1:
+        if column_position > 0:
+            column_position -= 1
+            num_steps += 1
+            return row_position, column_position, num_steps
+        else:
+            return random_move(row_position, column_position, dimension, num_steps + 1)
+    elif rand_val == 2:
+        if row_position + 1 < dimension:
+            row_position += 1
+            num_steps += 1
+            return row_position, column_position, num_steps
+        else:
+            return random_move(row_position, column_position, dimension, num_steps + 1)
+    elif rand_val == 3:
+        if row_position > 0:
+            row_position -= 1
+            num_steps += 1
+            return row_position, column_position, num_steps
+        else:
+            return random_move(row_position, column_position, dimension, num_steps + 1)
+
+
+def move_next(row_position, column_position ,dimension, num_steps):
+    if column_position + 1 < dimension:
+        column_position += 1
+        num_steps += 1
+    elif column_position > 0:
+        column_position -= 1
+        num_steps += 2
+    elif row_position + 1 < dimension:
+        row_position += 1
+        num_steps += 3
+    elif row_position > 0:
+        row_position -= 1
+        num_steps += 4
+    return row_position, column_position, num_steps
+
+def flex_agent(dimension, num_dirty_tiles):
+    row_position = generate_random(dimension)
+    column_position = generate_random(dimension)
+
+    twod_array = instantiate_twod_array(dimension)
+    dirty_tiles_array = instantiate_dirt_tiles(num_dirty_tiles, twod_array)
+
+    num_steps = 0
+    count_dirty_tiles = 0
+    while num_steps <= 100:
+        if dirty_tiles_array[row_position][column_position] == 1 and generate_random(100) < 25:
+            count_dirty_tiles += 1
+            if count_dirty_tiles == num_dirty_tiles:
+                # print("Solution found")
+                return num_steps
+            dirty_tiles_array[row_position][column_position] == 0
+            row_position, column_position, num_steps = move_next(row_position, column_position, dimension, num_steps)
+        else:
+            if generate_random(100) < 10:
+                dirty_tiles_array[row_position][column_position] == 1
+            row_position, column_position, num_steps = move_next(row_position, column_position, dimension, num_steps)
+    return num_steps
+
+def randomize_agent(dimension, num_dirty_tiles):
+    row_position = generate_random(dimension)
+    column_position = generate_random(dimension)
+
+    twod_array = instantiate_twod_array(dimension)
+    dirty_tiles_array = instantiate_dirt_tiles(num_dirty_tiles, twod_array)
+
+    num_steps = 0
+    count_dirty_tiles = 0
+    while num_steps <= 100:
+        if dirty_tiles_array[row_position][column_position] == 1 and generate_random(100) < 25:
+            count_dirty_tiles += 1
+            if count_dirty_tiles == num_dirty_tiles:
+                # print("Solution found")
+                return num_steps
+            dirty_tiles_array[row_position][column_position] == 0
+            row_position, column_position, num_steps = move_next(row_position, column_position, dimension, num_steps)
+        else:
+            if generate_random(100) < 10:
+                dirty_tiles_array[row_position][column_position] == 1
+            row_position, column_position, num_steps = random_move(row_position, column_position, dimension, num_steps)
+    return num_steps
+
+dirty_tiles = 5
+
+num_of_tests = 0
+total_steps = 0
+
+while num_of_tests <= 100:
+    total_steps += flex_agent(3, dirty_tiles)
+    num_of_tests += 1
+
+print(total_steps / 100)
+
+num_of_tests = 0
+total_steps = 0
+while num_of_tests <= 100:
+    total_steps += randomize_agent(3, dirty_tiles)
+    num_of_tests += 1
+
+print(total_steps / 100)
