@@ -1,0 +1,56 @@
+translation = {
+    1: "Main",
+    2: "SetUp",
+    3: "Process",
+    4: "TearDown",
+    5: "Allocate_Memory",
+    6: "Read_Input_Records",
+    7: "Build_Account_Table",
+    8: "Check_For_Legality",
+    9: "Report_Illegal_Entry",
+    10: "Print_Output_Line"
+}
+
+compiler_dependencies = {
+    1: [2, 3, 4],
+    2: [5],
+    3: [6, 7, 8, 9],
+    4: [10],
+    5: [],
+    6: [5],
+    7: [],
+    8: [],
+    9: [10],
+    10: []
+}
+
+def print_dependencies():
+    for elem, val in compiler_dependencies.iteritems():
+        print(translation[elem])
+        for dependency in val:
+            print(translation[dependency])
+        print("---------------------------")
+
+
+def wrapper_topological():
+    length = len(compiler_dependencies) + 1
+    degree_inbound = [0] * length
+    visited = [False] * length
+    for list_neighbours in compiler_dependencies.itervalues():
+        for neighbour in list_neighbours:
+            degree_inbound[neighbour] += 1
+    topological_sort(length, visited, degree_inbound)
+
+
+def topological_sort(length, visited, degree_inbound):
+    for i in range(1, length):
+        if not visited[i] and degree_inbound[i] == 0:
+            visited[i] = True
+            print(translation[i])
+            adj_list = compiler_dependencies[i]
+            for neighbour in adj_list:
+                degree_inbound[neighbour] -= 1
+            topological_sort(length, visited, degree_inbound)
+
+
+wrapper_topological()
