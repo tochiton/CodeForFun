@@ -1,0 +1,53 @@
+graph = {
+    'A': [('B', 3), ('G', 1)],
+    'B': [('A', 3), ('C', 6), ('F', 2)],
+    'C': [('B', 6)],
+    'D': [('F', 6)],
+    'E': [('F', 5)],
+    'F': [('B', 2), ('D', 6), ('E', 5)],
+    'G': [('A', 1)]
+}
+
+def wrapper_DFS(graph):
+    visited = {}
+    for key in graph:
+        visited[key] = False
+    all_path = [[]]
+    a_path = []
+    DFS('A', visited, all_path, a_path)
+    cost_each_path = {}
+    for path in all_path:
+        i = 0
+        cost = 0
+        while i + 1 < len(path):
+            a_list = graph[path[i]]
+            for elem in a_list:
+                if elem[0] == path[i + 1]:
+                    cost = cost + elem[1]
+            i += 1
+        cost_each_path[cost] = path
+    max_val = 0
+    for path_with_cost in cost_each_path:
+        print(path_with_cost, cost_each_path[path_with_cost])
+        if path_with_cost > max_val:
+            max_val = path_with_cost
+    print("")
+    print("***************************")
+    print("")
+    print("The biggest cost of any pair of cities is: ")
+    print(max_val, cost_each_path[max_val])
+
+def DFS(current_node, visited, all_path, a_path):
+    visited[current_node] = True
+    a_path = a_path + [current_node]
+    list_of_neighbours = graph[current_node]
+    for a_neighbour in list_of_neighbours:
+        if not visited[a_neighbour[0]]:
+            DFS(a_neighbour[0], visited, all_path, a_path)
+        else:
+            if not a_neighbour[0] in a_path:
+                a_path = a_path + [a_neighbour[0]]
+    all_path.append(a_path)
+
+
+all_comb_path = wrapper_DFS(graph)
