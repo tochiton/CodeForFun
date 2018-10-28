@@ -1,0 +1,173 @@
+from copy import deepcopy
+import heapq
+
+goal = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+
+matrix_1 = [
+    [1, 0, 3],
+    [4, 5, 6],
+    [7, 8, 2]
+]
+
+matrix_2 = [
+    [3, 2, 1],
+    [4, 0, 6],
+    [7, 5, 8]
+]
+
+matrix_3 = [
+    [8, 5, 7],
+    [4, 0, 6],
+    [2, 3, 1]
+]
+
+matrix = matrix_3
+
+
+def get_empty_tile(matrix):
+    flatten = flatten_matrix(matrix)
+    position = 0
+    length = len(flatten)
+    for i in range(length):
+        if flatten[i] == 0:
+            position = i
+            break
+
+    row = position / 3
+    column = position % 3
+    return row, column
+
+def flatten_matrix(matrix):
+    flatten_matrix = matrix[0] + matrix[1] + matrix[2]
+    return flatten_matrix
+
+def stringify_matrix(matrix):
+    flatten_matrix = matrix[0] + matrix[1] + matrix[2]
+    str_matrix = ''.join(str(e) for e in flatten_matrix)
+    return str_matrix
+
+def can_i_move(dimension, row, column):
+    return row < dimension and column < dimension
+
+
+def print_twod_array(twoDarray):
+    for row in twoDarray:
+        for elem in row:
+            print elem,
+        print("\n")
+
+
+def calculate_misplaced_tiles(current_config):
+    # length = len(current_config) * len(current_config[0]) - 1
+    total_misplaced = 0
+    flatten_current_m = flatten_matrix(current_config)
+    for i in range(8):
+        if flatten_current_m[i] != goal[i]:
+            total_misplaced += 1
+    # print(total_misplaced)
+    return total_misplaced
+
+
+def swap_elements(matrix, avaliable_row, avaliable_column, final_row, final_column):
+    temp = matrix[avaliable_row][avaliable_column]
+    matrix[avaliable_row][avaliable_column] = matrix[final_row][final_column]
+    matrix[final_row][final_column] = temp
+    return matrix
+
+
+flag_to_print = False
+
+
+def generate_children(matrix, empty_row, empty_column):
+    dimension = len(matrix)
+    all_children = []
+    if empty_row + 1 < dimension:
+        down_one = deepcopy(matrix)
+        move_down = swap_elements(down_one, empty_row, empty_column, empty_row + 1, empty_column)
+        all_children.append([empty_row + 1, empty_column, move_down])
+        if flag_to_print:
+            print("move down")
+            print_twod_array(move_down)
+
+    if empty_row - 1 >= 0:
+        up_one = deepcopy(matrix)
+        move_up = swap_elements(up_one, empty_row, empty_column, empty_row - 1, empty_column)
+        all_children.append([empty_row - 1, empty_column, move_up])
+        if flag_to_print:
+            print("move up")
+            print_twod_array(move_up)
+
+    if empty_column + 1 < dimension:
+        right_one = deepcopy(matrix)
+        move_right = swap_elements(right_one, empty_row, empty_column, empty_row, empty_column + 1)
+        all_children.append([empty_row, empty_column + 1, move_right])
+        if flag_to_print:
+            print("move right")
+            print_twod_array(move_right)
+
+    if empty_column - 1 >= 0:
+        left_one = deepcopy(matrix)
+        move_left = swap_elements(left_one, empty_row, empty_column, empty_row, empty_column - 1)
+        all_children.append([empty_row, empty_column - 1, move_left])
+        if flag_to_print:
+            print("move left")
+            print_twod_array(move_left)
+    return all_children
+
+
+min_heap = []
+visited = set()
+
+aval_row, aval_col = get_empty_tile(matrix)
+
+misplaced_tiles = calculate_misplaced_tiles(matrix)
+history = stringify_matrix(matrix)
+root = (matrix, [history], 0, aval_row, aval_col)
+heapq.heappush(min_heap, (misplaced_tiles, root))
+
+steps = 0
+found_solution = False
+# child data:
+#  tuple[0] = matrix, tuple[1] = ancestors,
+#  tuple[2] = move_cost, tuple[3] = ava_row and tuple[4] = ava_col
+# heap args: child[0] = total cost, child[1] = data
+while len(min_heap) > 0 and steps < 1000000 and not found_solution:
+    lowest_child = heapq.heappop(min_heap)
+    child_data = lowest_child[1]        # pop the lowest child
+    child_matrix = child_data[0]        # get the matrix config
+    visited_config = stringify_matrix(child_matrix)
+    visited.add(visited_config)         # add it to the set of explored nodes
+
+    parent_path_cost = child_data[2]
+
+    ava_row, ava_col = child_data[3], child_data[4]
+    new_generation = generate_children(child_matrix, ava_row, ava_col)
+    for a_child in new_generation:
+        a_child_matrix = a_child[2]     # get child matrix from tuple
+        matrix_as_string = stringify_matrix(a_child_matrix)
+        if matrix_as_string not in visited:     # new matrix config not explored yet
+            # instantiating a new child
+            new_row, new_col = a_child[0], a_child[1]   # keeps track of the available cell
+            new_path_cost = parent_path_cost + 1
+            misplaced_tiles = calculate_misplaced_tiles(a_child_matrix)
+            if misplaced_tiles == 0:
+                print("Solution found!")
+                print("Steps: ", steps)
+                ancestors = deepcopy(child_data[1])
+                ancestors.insert(0, matrix_as_string)
+                ancestors.reverse()
+                for grandpa in ancestors:
+                    print(grandpa)
+                found_solution = True
+                break
+            heuristic_cost = new_path_cost + misplaced_tiles
+
+            ancestors = deepcopy(child_data[1])
+            ancestors.insert(0, matrix_as_string)
+            official_new_child = (a_child_matrix, ancestors, new_path_cost, new_row, new_col)
+            heapq.heappush(min_heap, (heuristic_cost, official_new_child))
+    steps += 1
+    if len(min_heap) == 0:
+        print("Empty heap - no more nodes to explore")
+
+
