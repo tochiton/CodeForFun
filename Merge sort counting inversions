@@ -1,0 +1,15 @@
+    length = len(arr)
+    i = 1
+    count = 0
+    result = []
+    result.append(arr[0])
+    while i < length:
+        result_length = len(result)
+        j = 0
+        temp_val = arr[i]
+        while j < result_length and result[j] <= temp_val:            
+            j += 1
+        result = result[0:j] + [temp_val] + result[j:result_length]
+        count = count + (i - j)
+        i += 1    
+    return count
