@@ -1,0 +1,77 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+
+#
+# Complete the 'closest' function below.
+#
+# The function is expected to return an INTEGER_ARRAY.
+# The function accepts following parameters:
+#  1. STRING s
+#  2. INTEGER_ARRAY queries
+#
+
+def closest(s, queries):
+    result = []
+    length = len(s)
+    a_map = {}
+    list_length_cache = {}
+    index_cache = {}
+    i = 0
+    for i in range(length):
+        char = s[i]
+        if char in a_map:
+            a_list = a_map[char]
+            a_list.append(i)
+            current_length = list_length_cache[char] + 1
+            list_length_cache[char] = current_length
+
+            ref_map = index_cache[char]
+            ref_map[i] = current_length
+        else:
+            a_map[char] = [i]  
+            list_length_cache[char] = 0  
+            temp_map = {}
+            temp_map[i] = 0
+            index_cache[char] = temp_map 
+
+    for index in queries:
+        a_char = s[index]
+        current_list = a_map[a_char]
+        len_list = len(current_list)
+        if len_list == 1:
+            result.append(-1)
+        elif len_list == 2:
+            if index == current_list[0]:
+                result.append(current_list[1])
+            else:
+                result.append(current_list[0])
+        else:
+            # rel_index = current_list.index(index)
+            ref_map = index_cache[a_char]
+            rel_index = ref_map[index]    
+
+            if rel_index == len(current_list) - 1:
+                result.append(current_list[rel_index - 1])
+            elif rel_index == 0:
+                result.append(current_list[1])
+            else:
+                prev = current_list[rel_index - 1]
+                after = current_list[rel_index + 1]
+
+                distance_pre = index - prev
+                distance_after = after - index 
+            
+                if distance_pre <= distance_after:
+                    result.append(prev)
+                else:
+                    result.append(after)  
+    return result            
+                                             
+if __name__ == '__main__':
