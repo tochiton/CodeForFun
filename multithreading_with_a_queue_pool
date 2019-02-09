@@ -1,0 +1,168 @@
+ 
+
+    # q = Queue(maxsize=0)
+    # num_theads = min(100, length)
+
+    # for i in range(length):
+    #     q.put((i,queries[i]))
+
+    # results = [[] for x in range(length)]
+
+    # def helper(q, sentences, results, length_sentences):
+    #     while not q.empty():
+    #         work = q.get()
+    #         current_query = work[1].split()
+    #         j = 0
+    #         temp_result = []
+    #         at_least_one = True
+    #         while j < length_sentences:
+    #             cache = sentences[j].split()
+    #             result =  all(elem in cache  for elem in current_query)
+    #             if result:
+    #                 temp_result.append(str(j))
+    #                 at_least_one = False                           
+    #             j+= 1
+    #         if at_least_one:
+    #             results[work[0]] = [str(-1)]
+    #         else:
+    #             results[work[0]] = temp_result                  
+    #         q.task_done()
+    #     return True
+   
+    # i = 0 
+    # while i < num_theads:
+    #     worker = Thread(target=helper, args=[q, sentences,results, length_sentences])
+    #     worker.start()                    
+    #     i += 1
+    
+    # q.join()    
+
+    # for a_result in results:
+    #     print(" ".join(a_result))
+    
+    ================================================
+    
+    length = len(queries)
+    length_sentences = len(sentences)
+    
+    results = [[] for x in range(length)]
+
+    def helper(index, a_query, sentences, results, length_sentences):
+        current_query = a_query.split()
+        j = 0
+        temp_result = []
+        at_least_one = True
+        while j < length_sentences:
+            cache = sentences[j].split()
+            result =  all(elem in cache  for elem in current_query)
+            if result:
+                temp_result.append(str(j))
+                at_least_one = False                           
+            j+= 1
+        if at_least_one:
+            results[index] = [str(-1)]
+        else:
+            results[index] = temp_result                  
+   
+    threads = []   
+    i = 0 
+    while i < length:
+        process = Thread(target=helper, args=[i, queries[i], sentences,results, length_sentences])
+        process.start()
+        threads.append(process)                    
+        i += 1
+    for process in threads:
+        process.join()    
+
+    for a_result in results:
+        print(" ".join(a_result))
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+
+#
+# Complete the 'textQueries' function below.
+#
+# The function accepts following parameters:
+#  1. STRING_ARRAY sentences
+#  2. STRING_ARRAY queries
+#
+
+def textQueries(sentences, queries):
+    
+    length = len(queries)
+    length_sentences = len(sentences)
+    
+    map_of_queries = {}
+    len_of_queries = []    
+    # for i in range(length):     
+    #     result = queries[i].split()
+    #     temp_len = len(result)
+    #     len_of_queries.append(temp_len)
+    #     map_of_queries[i] = result
+
+    map_sentences = {}
+    for i in range(length_sentences):
+        temp_cache = {}
+        list_str = sentences[i].split()
+        for elem in list_str:
+            if elem in temp_cache:
+                temp_cache[elem] += 1
+            else:
+                temp_cache[elem] = 1    
+        map_sentences[i] = temp_cache
+
+    i = 0 
+    while i < length:
+        current_query = queries[i].split()
+        j = 0
+        temp_result = []
+        at_least_one = True
+        while j < length_sentences:
+            count = 0
+            cache = map_sentences[j]
+            if all (k in cache for k in current_query):
+                temp_result.append(str(j))
+                at_least_one = False
+            # times = 1         
+            # for elem in current_query:
+            #     if elem in cache and len(cache) > 0:
+            #         if len(current_query) != 1:
+            #             times = cache[elem]
+            #         count += 1 
+            #     else:
+            #         break 
+            # if count == len_of_queries[i]:
+            #     for z in range(times): 
+            #         temp_result.append(str(j))
+            #     at_least_one = False                           
+            j+= 1
+        if at_least_one:
+            print(-1)
+        else:
+            print(" ".join(temp_result))                  
+        i += 1
+    
+
+if __name__ == '__main__':
