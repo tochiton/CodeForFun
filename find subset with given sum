@@ -1,0 +1,19 @@
+class Solution(object):
+    def canPartitionKSubsets(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: bool
+        """
+        def power_set(s):
+            result = [[]]
+            for elem in s:
+                result.extend([x + [elem] for x in result])
+            return result 
+        
+        final_sum = map(sum, power_set(nums))
+        counter = {x: final_sum.count(x) for x in final_sum}
+        for value in counter.values():
+            if value >= k:
+                return True 
+        return False
