@@ -1,0 +1,19 @@
+def fun(s):
+    # return True if s is a valid email, else return False
+    try:
+        user_name, domain_extension = s.split("@")
+        domain, extension = domain_extension.split(".")
+    except ValueError:
+        return False  
+    user_name = user_name.replace("-", "").replace("_", "")
+    if not user_name.isalnum():
+        return False 
+    if not domain.isalnum():
+        return False 
+    if len(extension) > 3:
+        return False 
+    return True         
+    match = pattern.search(s)
+    if match:
+        return True 
+    return False  
