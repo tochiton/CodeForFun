@@ -1,0 +1,28 @@
+# you can write to stdout for debugging purposes, e.g.
+# print("this is a debug message")
+
+def solution(S, K):
+    # write your code in Python 3.6
+    temp_str = S.replace("-", "")
+    temp_str = temp_str.upper()
+    length = len(temp_str)
+    group = length // K
+    remainder = length % K
+    print(group, remainder)
+    result = ""
+    if remainder == 0:
+        for i in range(0, length, K):
+            result = result + temp_str[i:K] + 
+        print(result)
+        result = result.upper()
+        return result
+    else:
+        first = temp_str[0:remainder] + "-"
+        second =temp_str[remainder:length]
+        length = len(second)
+        for i in range(0, length, K):
+            result = result + temp_str[i:K]
+        print(result)
+        result = result.upper()
+        return result
+    pass
