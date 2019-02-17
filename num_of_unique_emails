@@ -1,0 +1,14 @@
+    def numUniqueEmails(self, emails):
+        """
+        :type emails: List[str]
+        :rtype: int
+        """
+        addresses = set()
+        for email in emails:
+            name, domain = email.split("@")
+            name = name.split('+', 1)[0]
+            name = name.replace(".", "")
+            real_email = name + domain 
+            if real_email not in addresses:
+                addresses.add(real_email)
+        return len(addresses)  
