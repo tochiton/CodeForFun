@@ -1,0 +1,38 @@
+import re
+class Solution(object):
+    def maskPII(self, S):
+        """
+        :type S: str
+        :rtype: str
+        """
+        pattern = re.compile(r'[a-zA-Z]+@[a-zA-Z]+.[a-zA-Z]+')
+        num_pattern = re.compile(r'^\d[\d]*$')
+        elem = S
+        if '@' in elem:
+            match = pattern.findall(elem)
+            if match:
+                email = match[0]
+                email = email.lower()
+                email, domain = email.split('@')
+                email = email[0] + "*****" + email[len(email) - 1] + "@" + domain
+                return email 
+        else:
+            number = elem.replace("(", "").replace(")", "").replace(",", "").replace(" ", "").replace("-", "").replace("+","")
+        match = num_pattern.match(number)
+        if match:
+            temp_num = match.group()
+            # print(temp_num)
+            length = len(temp_num)
+            # print(length)
+            if length == 10:
+                number = "***-***-" + temp_num[-4:]
+                return number
+            else:
+                remainder = length - 10
+                temp = ""
+                for i in range(remainder):
+                    temp += "*"
+                temp = "+" + temp + "-" + "***-***-" + str(temp_num[-4:])
+                return temp
+            
+                        
