@@ -1,0 +1,23 @@
+def nQueens(n):
+    rows = set()
+    diag = set()
+    off_diag = set()
+    board = []
+    result = []
+    def backtrack(col):
+        if col == n:
+            result.append(list(board))
+        for row in range(n):
+            if row not in rows and row + col not in diag and row - col not in off_diag:
+                rows.add(row)
+                diag.add(row + col)
+                off_diag.add(row - col)
+                board.append(row + 1)
+                backtrack(col + 1)
+                board.pop()
+                rows.remove(row)
+                diag.remove(row + col)
+                off_diag.remove(row - col)
+    backtrack(0)
+    print(result)
+    return result
