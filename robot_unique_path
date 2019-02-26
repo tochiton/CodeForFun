@@ -1,0 +1,19 @@
+    def uniquePaths(self, m, n):
+        """
+        :type m: int
+        :type n: int
+        :rtype: int
+        """
+        cache = {}
+        def move(col, row):
+            if (col, row) in cache:
+                return cache[col, row]
+            count = 0
+            if col == m -1 and row == n - 1:
+                return 1
+            elif col == m or row == n:
+                return 0
+            cache[(col, row)] = move(col + 1, row) + move(col, row + 1)    
+            return cache[col, row]
+        total_path = move(0, 0)
+        return total_path
